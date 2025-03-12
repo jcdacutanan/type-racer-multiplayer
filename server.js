@@ -284,19 +284,30 @@ function leaveRoom(socket) {
 //   });
 // }
 
-function broadcast(room, message) {
-  room.players.forEach((player) => {
-    try {
-      // Exclude the WebSocket object before sending
-      const sanitizedPlayer = { ...player };
-      delete sanitizedPlayer.socket; // Prevent circular JSON error
+// function broadcast(room, message) {
+//   room.players.forEach((player) => {
+//     try {
+//       // Exclude the WebSocket object before sending
+//       const sanitizedPlayer = { ...player };
+//       delete sanitizedPlayer.socket; // Prevent circular JSON error
 
-      player.socket.send(
-        JSON.stringify({ ...message, player: sanitizedPlayer })
-      );
-    } catch (error) {
-      console.error("Error sending message to player:", error);
-    }
+//       player.socket.send(
+//         JSON.stringify({ ...message, player: sanitizedPlayer })
+//       );
+//     } catch (error) {
+//       console.error("Error sending message to player:", error);
+//     }
+//   });
+// }
+
+function broadcast(room, message) {
+  Object.values(room.players).forEach((player) => {
+    const safeMessage = JSON.stringify(
+      Object.fromEntries(
+        Object.entries(message).filter(([key]) => key !== "socket")
+      )
+    );
+    player.socket.send(safeMessage);
   });
 }
 
