@@ -289,7 +289,12 @@ document.getElementById("typingInput").addEventListener("input", (event) => {
   const typedText = inputField.value;
 
   // Normalize text for comparison (fixes apostrophe issues)
-  const normalizeText = (text) => text.normalize("NFKD").replace(/’/g, "'");
+  const normalizeText = (text) =>
+    text
+      .normalize("NFKD")
+      .replace(/’/g, "'")
+      .replace(/“|”/g, '"') // Curly quotes → straight quotes
+      .replace(/—|–/g, "-");
 
   const normalizedTyped = normalizeText(typedText);
   const normalizedRaceText = normalizeText(raceText);
