@@ -1,23 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiplayer Type Racer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #raceText {
+        font-size: 20px;
+        margin: 20px;
+      }
+      #typingInput {
+        font-size: 20px;
+      }
+      .progress {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Multiplayer Type Racer</h1>
+    <h4
+      id="countdownDisplay"
+      style="font-size: 24px; font-weight: bold; display: none"></h4>
+    <p
+      id="raceStatusDisplay"
+      style="font-size: 24px; font-weight: bold; display: none"></p>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <link rel="stylesheet" type="text/css" href="styles/style.css">
-    <title>Type Racer Multiplayer - JoshyWeb</title>
-</head>
+    <div id="createJoinContainer">
+      <input type="number" id="maxPlayers" min="2" max="20" value="2" />
+      <button onclick="createRoom()">Create Room</button>
+      <input type="text" id="roomIdInput" placeholder="Enter Room ID" />
+      <button onclick="joinRoom()">Join Room</button>
+    </div>
+    <button id="leaveButton" style="display: none" onclick="leaveRoom()">
+      Leave Room
+    </button>
 
-<body>
-    <header>
-    </header>
-    <main>
-        <h1>Type Racer Multiplayer</h1>
-    </main>
-    <footer>
-    </footer>
+    <p id="roomIdDisplay"></p>
+    <p id="creatorDisplay"></p>
+    <p id="usernameDisplay"></p>
+    <!-- This element must exist -->
+    <button id="startButton" style="display: none" onclick="startRace()">
+      Start Race
+    </button>
 
-    <script src="scripts/script.js"></script>
-</body>
+    <div
+      id="raceTimer"
+      style="display: none; font-size: 20px; font-weight: bold"></div>
+    <div
+      id="winnerDisplay"
+      style="
+        display: none;
+        font-size: 24px;
+        font-weight: bold;
+        color: gold;
+      "></div>
+    <div
+      id="finishDisplay"
+      style="
+        display: none;
+        font-size: 20px;
+        font-weight: bold;
+        color: green;
+      "></div>
+
+    <p id="raceText"></p>
+    <!-- <input id="typingInput" type="text" style="display: none;" disabled /> -->
+    <textarea
+      id="typingInput"
+      type="text"
+      style="display: none; resize: none"
+      disabled
+      rows="5"
+      cols="70"></textarea>
+
+    <div id="progressContainer"></div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
