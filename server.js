@@ -302,12 +302,20 @@ function leaveRoom(socket) {
 
 function broadcast(room, message) {
   Object.values(room.players).forEach((player) => {
-    const safeMessage = JSON.stringify(
-      Object.fromEntries(
-        Object.entries(message).filter(([key]) => key !== "socket")
-      )
-    );
-    player.socket.send(safeMessage);
+    if (player.socket.readyState === WebSocket.OPEN) {
+      // Exclude the `socket` property to avoid circular JSON errors
+      const safeMessage = JSON.stringify({
+        ...message,
+        players: Object.fromEntries(
+          Object.entries(room.players).map(([id, p]) => [
+            id,
+            { progress: p.progress, finished: p.finished }, // Exclude `socket`
+          ])
+        ),
+      });
+
+      player.socket.send(safeMessage);
+    }
   });
 }
 
