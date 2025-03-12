@@ -1,4 +1,6 @@
-const socket = new WebSocket("ws://localhost:3000"); // Change when deployed
+const socket = new WebSocket(
+  "wss://type-racer-multiplayer-production.up.railway.app"
+); // Change when deployed
 
 let playerId,
   roomId,
