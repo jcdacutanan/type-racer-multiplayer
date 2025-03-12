@@ -1,7 +1,9 @@
 const WebSocket = require("ws");
 const fs = require("fs");
 
-const server = new WebSocket.Server({ port: 3000 });
+// const server = new WebSocket.Server({ port: 3000 });
+const PORT = process.env.PORT || 3000;
+const server = new WebSocket.Server({ port: PORT });
 
 let rooms = {}; // Store rooms with players, progress, and game state
 
