@@ -265,10 +265,37 @@ function leaveRoom(socket) {
   }
 }
 
+// function broadcast(room, message) {
+//   Object.values(room.players).forEach((player) => {
+//     if (player.socket) {
+//       player.socket.send(JSON.stringify(message));
+//     }
+//   });
+// }
+
+// function broadcast(room, message) {
+//   room.players.forEach(player => {
+//       try {
+//           // Only send the needed message, NOT the entire player object
+//           player.socket.send(JSON.stringify(message));
+//       } catch (error) {
+//           console.error("Error sending message to player:", error);
+//       }
+//   });
+// }
+
 function broadcast(room, message) {
-  Object.values(room.players).forEach((player) => {
-    if (player.socket) {
-      player.socket.send(JSON.stringify(message));
+  room.players.forEach((player) => {
+    try {
+      // Exclude the WebSocket object before sending
+      const sanitizedPlayer = { ...player };
+      delete sanitizedPlayer.socket; // Prevent circular JSON error
+
+      player.socket.send(
+        JSON.stringify({ ...message, player: sanitizedPlayer })
+      );
+    } catch (error) {
+      console.error("Error sending message to player:", error);
     }
   });
 }
