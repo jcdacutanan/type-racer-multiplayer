@@ -288,11 +288,17 @@ document.getElementById("typingInput").addEventListener("input", (event) => {
   const inputField = event.target;
   const typedText = inputField.value;
 
+  // Normalize text for comparison (fixes apostrophe issues)
+  const normalizeText = (text) => text.normalize("NFKD").replace(/’/g, "'");
+
+  const normalizedTyped = normalizeText(typedText);
+  const normalizedRaceText = normalizeText(raceText);
+
   let correctChars = 0;
   let lastCorrectIndex = -1;
 
-  for (let i = 0; i < typedText.length; i++) {
-    if (typedText[i] === raceText[i]) {
+  for (let i = 0; i < normalizedTyped.length; i++) {
+    if (normalizedTyped[i] === normalizedRaceText[i]) {
       correctChars++;
       lastCorrectIndex = i;
     } else {
@@ -308,7 +314,7 @@ document.getElementById("typingInput").addEventListener("input", (event) => {
   const progress = Math.round((correctChars / raceText.length) * 100);
   socket.send(JSON.stringify({ type: "progress", roomId, playerId, progress }));
 
-  if (typedText === raceText) {
+  if (normalizedTyped === normalizedRaceText) {
     socket.send(JSON.stringify({ type: "finish", roomId, playerId }));
   }
 });
