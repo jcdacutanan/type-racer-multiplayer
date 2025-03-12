@@ -102,7 +102,9 @@ socket.onmessage = (event) => {
       //   progressContainer.style.display = "none";
 
       // Hide start button if they were the creator
-      document.getElementById("startButton").style.display = "none";
+      // Reset start button visibility and state
+      startButton.style.display = "none";
+      startButton.disabled = false; // Re-enable button when leaving room
       document.getElementById("creatorDisplay").innerText = "";
 
       if (startButton) startButton.style.display = "none"; // Hide start button
